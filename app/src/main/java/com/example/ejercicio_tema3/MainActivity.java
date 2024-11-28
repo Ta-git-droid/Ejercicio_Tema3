@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         } );
 
         // Inicialización de listas de animales
-        inicializarListas ();
+        // inicializarListas ();
 
         // Configurar RecyclerView principal
         configurarRecyclerView ();
