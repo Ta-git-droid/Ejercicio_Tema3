@@ -34,7 +34,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
      * Lista inicial de animales a mostrar en el RecyclerView.
      */
     public AdaptadorAnimal(List<Animal> listaAnimales) {
-        this.listaAnimales = listaAnimales;
+        this.listaAnimales = (listaAnimales != null) ? listaAnimales : new ArrayList<>();
     }
 
     /**
