@@ -155,26 +155,32 @@ public class MainActivity extends AppCompatActivity {
      * Actualiza la lista mostrada en el RecyclerView según los filtros seleccionados.
      */
     private void actualizarListaFiltrada() {
-        List<Animal> listaFiltrada = new ArrayList<> ();
-        boolean filtroPerrosActivo = togglePerros.isChecked ();
-        boolean filtroGatosActivo = toggleGatos.isChecked ();
-        if (filtroPerrosActivo || filtroGatosActivo) {
-            // Filtrar por tipo de animal
-            for (Animal animal : listaAnimales) {
-                if (filtroPerrosActivo && animal.getTipo () == Animal.TipoAnimal.PERRO) {
-                    listaFiltrada.add ( animal );
-                } if (filtroGatosActivo && animal.getTipo () == Animal.TipoAnimal.GATO) {
-                    listaFiltrada.add ( animal );
+        List<Animal> listaFiltrada = new ArrayList<>();
+        boolean filtroPerrosActivo = togglePerros.isChecked();
+        boolean filtroGatosActivo = toggleGatos.isChecked();
+        // Verifica si la lista de animales no está vacía
+        if (listaAnimales != null && !listaAnimales.isEmpty()) {
+            if (filtroPerrosActivo || filtroGatosActivo) {
+                // Filtrar por tipo de animal
+                for (Animal animal : listaAnimales) {
+                    if (filtroPerrosActivo && animal.getTipo() == Animal.TipoAnimal.PERRO) {
+                        listaFiltrada.add(animal);
+                    }
+                    if (filtroGatosActivo && animal.getTipo() == Animal.TipoAnimal.GATO) {
+                        listaFiltrada.add(animal);
+                    }
                 }
+            } else {
+                // Si no hay filtros activos, mostrar todos los animales
+                listaFiltrada.addAll(listaAnimales);
             }
-        } else {
-            // Mostrar todos los animales si no hay filtros activos
-            listaFiltrada.addAll ( listaAnimales );
         }
         // Actualizar la lista del adaptador
-        animalAdapter.actualizarLista ( listaFiltrada );
+        animalAdapter.actualizarLista(listaFiltrada);
+        // Si la lista filtrada está vacía, mostrar mensaje de advertencia
         if (listaFiltrada.isEmpty()) {
-            Log.w(TAG, getString( R.string.no_se_encontraron_animales_que_coincidan_con_los_filtros));
+            Log.w(TAG, getString(R.string.no_se_encontraron_animales_que_coincidan_con_los_filtros));
+            Toast.makeText(this, R.string.no_se_encontraron_animales_que_coincidan_con_los_filtros, Toast.LENGTH_SHORT).show();
         }
     }
 
