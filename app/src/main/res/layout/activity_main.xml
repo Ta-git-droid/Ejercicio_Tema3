@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_primary"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logoCabecera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="1dp"
+            android:contentDescription="@string/icono_huella_perro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/titulo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/huellas_perro"
+            app:tint="@color/md_theme_primaryFixed" />
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/busca_encuentra_y_adopta"
+            android:textColor="@color/md_theme_onSecondary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/logoCabecera"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imagenPrincipal"
+        android:layout_width="412dp"
+        android:layout_height="245dp"
+        android:contentDescription="@string/perro_y_gato"
+        android:scaleType="fitStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:srcCompat="@drawable/perro_y_gato"
+        tools:srcCompat="@drawable/perro_y_gato"
+        tools:ignore="VisualLintBounds" />
+
+    <ToggleButton
+        android:id="@+id/filtroPerros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/md_theme_inversePrimary"
+        android:padding="5dp"
+        android:textOff="@string/filtrar_perros"
+        android:textOn="@string/mostrando_perros"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imagenPrincipal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.949" />
+
+    <ToggleButton
+        android:id="@+id/filtroGatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/md_theme_inversePrimary"
+        android:padding="5dp"
+        android:textOff="@string/filtrar_gatos"
+        android:textOn="@string/mostrando_gatos"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutBotones"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.95" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBotones"
+        android:layout_width="409dp"
+        android:layout_height="69dp"
+        android:background="@color/md_theme_primary"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenPrincipal">
+
+        <ImageButton
+            android:id="@+id/agregar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@color/md_theme_primaryFixed"
+            android:contentDescription="@string/Agregar"
+            app:srcCompat="@android:drawable/ic_input_add"
+            tools:ignore="ImageContrastCheck" />
+
+        <ImageButton
+            android:id="@+id/eliminar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@color/md_theme_primaryFixed"
+            android:contentDescription="@string/eliminar"
+            app:srcCompat="@android:drawable/ic_delete" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="380dp"
+        android:layout_height="340dp"
+        android:background="@color/md_theme_primaryFixed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutBotones" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutFavoritos"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/md_theme_primaryFixed"
+        android:orientation="vertical"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/textFavoritos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/lista_de_favoritos"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFavoritos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

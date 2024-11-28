@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Ejercicio Tema3</string>
+    <string name="icono_huella_perro">Icono de huellas animales</string>
+    <string name="perro_y_gato">Imagen perro y gato</string>
+    <string name="filtrar_perros">Filtrar: perros</string>
+    <string name="mostrando_perros">Mostrando perros</string>
+    <string name="lista_de_favoritos">Lista de favoritos:</string>
+    <string name="filtrar_gatos">Filtrar: gatos</string>
+    <string name="mostrando_gatos">Mostrando gatos</string>
+    <string name="busca_encuentra_y_adopta">Busca, encuentra y adopta</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="Agregar">Agregar</string>
+    <string name="imagen_animal">Imagen animal</string>
+    <string name="nombre_del_animal">Nombre del animal:</string>
+    <string name="edad_del_animal">Edad del animal:</string>
+    <string name="descripci_n_breve_del_animal">Descripción breve del animal:</string>
+    <string name="favoritos">Favoritos:</string>
+    <string name="edad_placeholder">%1$d años</string>
+    <string name="nuevo_animal_a_adido">Nuevo animal añadido.</string>
+    <string name="animal_a_adido_a_la_lista">Animal añadido a la lista.</string>
+    <string name="pr_ximamente_se_implementar_una_forma_m_s_avanzada_de_a_adir_animales">PRÓXIMAMENTE SE IMPLEMENTARÁ UNA FORMA MÁS AVANZADA DE AÑADIR ANIMALES.</string>
+    <string name="ha_sido_eliminado">" ha sido eliminado."</string>
+    <string name="no_hay_animales_seleccionados_o_la_lista_est_vac_a">No hay animales seleccionados o la lista está vacía.</string>
+    <string name="desactiva_los_filtros_para_poder_eliminar_un_animal">Desactiva los filtros para poder eliminar un animal.</string>
+    <string name="no_se_encontraron_animales_que_coincidan_con_los_filtros">No se encontraron animales que coincidan con los filtros.</string>
+    <string name="error_al_agregar_un_nuevo_animal">"Error al agregar un nuevo animal: "</string>
+    <string name="error_al_agregar_el_animal">Error al agregar el animal.</string>
+    <string name="no_se_seleccion_un_animal_para_eliminar">No se selecciono un animal para eliminar.</string>
+    <string name="no_se_puede_eliminar_con_filtros_activos">No se puede eliminar con filtros activos.</string>
+    <string name="la_lista_de_animales_es_nula">La lista de animales es nula.</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AdoptaMe</string>
+    <string name="icono_huella_perro">Icona de pegadas de animais</string>
+    <string name="perro_y_gato">Imaxe de can e gato</string>
+    <string name="filtrar_perros">Filtrar: cans</string>
+    <string name="mostrando_perros">Amosando cans</string>
+    <string name="lista_de_favoritos">Lista de favoritos:</string>
+    <string name="filtrar_gatos">Filtrar: gatos</string>
+    <string name="mostrando_gatos">Amosando gatos</string>
+    <string name="busca_encuentra_y_adopta">Pesquisa, atopa e adopta</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="Agregar">Engadir</string>
+    <string name="imagen_animal">Imaxe animal</string>
+    <string name="nombre_del_animal">Nome do animal:</string>
+    <string name="edad_del_animal">Idade do animal:</string>
+    <string name="descripci_n_breve_del_animal">Breve descripción do animal:</string>
+    <string name="favoritos">Favoritos:</string>
+    <string name="edad_placeholder">%1$d anos</string>
+    <string name="nuevo_animal_a_adido">Novo animal engadido.</string>
+    <string name="animal_a_adido_a_la_lista">Animal engadido a lista.</string>
+    <string name="pr_ximamente_se_implementar_una_forma_m_s_avanzada_de_a_adir_animales">PRÓXIMAMENTE IMPLEMENTARÁSE UNHA FORMA MÁIS AVANZADA DE ENGADIR ANIMAIS.</string>
+    <string name="ha_sido_eliminado">foi eliminado.</string>
+    <string name="no_hay_animales_seleccionados_o_la_lista_est_vac_a">Non hay animais seleccionados ou a lista está valeira.</string>
+    <string name="desactiva_los_filtros_para_poder_eliminar_un_animal">Desactiva os filtros para poder eliminar un animal.</string>
+    <string name="lista_de_animales_inicializada_correctamente">Listaxe de animais iniciada correctamente</string>
+    <string name="no_se_encontraron_animales_que_coincidan_con_los_filtros">Non se atoparon animais que coincidan cos filtros.</string>
+    <string name="error_al_agregar_un_nuevo_animal">Erro ó agregar un novo animal</string>
+    <string name="error_al_agregar_el_animal">Error ao agregar o animal.</string>
+    <string name="no_se_seleccion_un_animal_para_eliminar">Non se seleccionou un animal para eliminar.</string>
+    <string name="no_se_puede_eliminar_con_filtros_activos">Non se pode eliminar con filtros activos.</string>
+    <string name="la_lista_de_animales_es_nula">A listaxe de animais é nula.</string>
+    <string name="posici_n_seleccionada_fuera_de_rango_reiniciando_a_1">Posición seleccionada fora de rango. Reiniciando a -1.</string>
+    <string name="la_posici_n_seleccionada_es_inv_lida_reiniciando">A posición seleccionada é inválida. Reiniciando.</string>
+    <string name="animal_nulo_en_la_posici_n">Animal nulo na posición.</string>
+</resources>
