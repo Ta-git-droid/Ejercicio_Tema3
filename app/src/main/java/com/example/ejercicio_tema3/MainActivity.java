@@ -189,6 +189,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void agregarAnimal() {
         try {
+            if (listaAnimales == null) {
+                listaAnimales = new ArrayList<>(); // Si es null, inicializa la lista
+            }
             Animal nuevoAnimal = new Animal ( "Nuevo" , R.drawable.imagen_perro_1 , Animal.TipoAnimal.PERRO , 1 , getString ( R.string.nuevo_animal_a_adido ) );
             listaAnimales.add ( nuevoAnimal );
             animalAdapter.actualizarLista ( listaAnimales );
@@ -207,25 +210,32 @@ public class MainActivity extends AppCompatActivity {
      */
     private void eliminarAnimal() {
         if (!togglePerros.isChecked() && !toggleGatos.isChecked()) {
-            // Obtener la posición seleccionada desde el adaptador
-            int posicionSeleccionada = animalAdapter.getPosicionSeleccionada();
-            // Verificar si hay un animal seleccionado
-            if (posicionSeleccionada != -1 && !listaAnimales.isEmpty()) {
-                // Eliminar el animal de la lista en la posición seleccionada
-                Animal animalEliminado = listaAnimales.remove(posicionSeleccionada);
-                animalAdapter.actualizarLista(listaAnimales); // Actualizar la lista en el adaptador
-                // Mostrar mensaje de eliminación
-                Toast.makeText(this, animalEliminado.getNombre() + getString( R.string.ha_sido_eliminado), Toast.LENGTH_SHORT).show();
-                // Restablecer la posición seleccionada en el adaptador
-                animalAdapter.setPosicionSeleccionada(-1); // Si tienes un método para resetear la posición
+            // Asegúrate de que listaAnimales no sea null antes de usarla
+            if (listaAnimales != null && !listaAnimales.isEmpty()) {
+                // Obtener la posición seleccionada desde el adaptador
+                int posicionSeleccionada = animalAdapter.getPosicionSeleccionada();
+
+                // Verificar si hay un animal seleccionado
+                if (posicionSeleccionada != -1) {
+                    // Eliminar el animal de la lista en la posición seleccionada
+                    Animal animalEliminado = listaAnimales.remove(posicionSeleccionada);
+                    animalAdapter.actualizarLista(listaAnimales); // Actualizar la lista en el adaptador
+                    // Mostrar mensaje de eliminación
+                    Toast.makeText(this, animalEliminado.getNombre() + getString(R.string.ha_sido_eliminado), Toast.LENGTH_SHORT).show();
+                    // Restablecer la posición seleccionada en el adaptador
+                    animalAdapter.setPosicionSeleccionada(-1); // Si tienes un método para resetear la posición
+                } else {
+                    // Mostrar mensaje si no hay selección
+                    Toast.makeText(this, R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, getString(R.string.no_se_seleccion_un_animal_para_eliminar));
+                }
             } else {
-                // Mostrar mensaje si no hay selección o la lista está vacía
-                Toast.makeText(this, R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Toast.LENGTH_SHORT).show();
-                Log.w(TAG, getString( R.string.no_se_seleccion_un_animal_para_eliminar));
+                // Si la lista es null o está vacía
+                Toast.makeText(this, R.string.lista_vacia, Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, R.string.desactiva_los_filtros_para_poder_eliminar_un_animal, Toast.LENGTH_SHORT).show();
-            Log.w(TAG, getString( R.string.no_se_puede_eliminar_con_filtros_activos));
+            Log.w(TAG, getString(R.string.no_se_puede_eliminar_con_filtros_activos));
         }
     }
 }

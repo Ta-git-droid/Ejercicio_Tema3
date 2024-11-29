@@ -31,6 +31,7 @@
     <string name="no_se_puede_eliminar_con_filtros_activos">No se puede eliminar con filtros activos.</string>
     <string name="la_lista_de_animales_es_nula">La lista de animales es nula.</string>
     <string name="posici_n_seleccionada_fuera_de_rango_reiniciando_a_1">Posición seleccionada fuera de rango. Reiniciando a -1.</string>
-    <string name="la_posici_n_seleccionada_es_inv_lida_reiniciando">La posición seleccionada es inválida. Reiniciando.</string>
+    <string name="la_posici_n_seleccionada_es_inv_lida_reiniciando">La posición seleccionada es inválida, reiniciando.</string>
     <string name="animal_nulo_en_la_posici_n">"Animal nulo en la posición "</string>
+    <string name="lista_vacia">Lista vacía.</string>
 </resources>
