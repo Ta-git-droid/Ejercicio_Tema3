@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -73,28 +72,15 @@ public class MainActivity extends AppCompatActivity {
      * Crear objetos de tipo Animal.
      */
     private void inicializarListas() {
-        listaAnimales = new ArrayList<> ( Arrays.asList (
-                new Animal ( "Luna" , R.drawable.imagen_perro_1 , Animal.TipoAnimal.PERRO , 3 , "Cariñosa y juguetona." ) ,
-                new Animal ( "Simba" , R.drawable.imagen_gato_1 , Animal.TipoAnimal.GATO , 2 , "Tranquilo y observador." ) ,
-                new Animal ( "Max" , R.drawable.imagen_perro_2 , Animal.TipoAnimal.PERRO , 5 , "Fiel y protector." ) ,
-                new Animal ( "Milo" , R.drawable.imagen_gato_2 , Animal.TipoAnimal.GATO , 1 , "Curioso y activo." ) ,
-                new Animal ( "Nala" , R.drawable.imagen_perro_3 , Animal.TipoAnimal.PERRO , 4 , "Amigable y obediente." ) ,
-                new Animal ( "Bella" , R.drawable.imagen_gato_3 , Animal.TipoAnimal.GATO , 3 , "Cariñosa y tranquila." ) ,
-                new Animal ( "Buddy" , R.drawable.imagen_perro_4 , Animal.TipoAnimal.PERRO , 6 , "Leal y energético." ) ,
-                new Animal ( "Cleo" , R.drawable.imagen_gato_4 , Animal.TipoAnimal.GATO , 2 , "Independiente y elegante." ) ,
-                new Animal ( "Rocky" , R.drawable.imagen_perro_5 , Animal.TipoAnimal.PERRO , 2 , "Valiente y juguetón." ) ,
-                new Animal ( "Lily" , R.drawable.imagen_gato_5 , Animal.TipoAnimal.GATO , 1 , "Dulce y afectuosa." ) ,
-                new Animal ( "Thor" , R.drawable.imagen_perro_6 , Animal.TipoAnimal.PERRO , 4 , "Enérgico y divertido." ) ,
-                new Animal ( "Oliver" , R.drawable.imagen_gato_6 , Animal.TipoAnimal.GATO , 3 , "Amigable y curioso." ) ,
-                new Animal ( "Duke" , R.drawable.imagen_perro_7 , Animal.TipoAnimal.PERRO , 5 , "Cariñoso y leal." ) ,
-                new Animal ( "Chloe" , R.drawable.imagen_gato_7 , Animal.TipoAnimal.GATO , 2 , "Tranquila y mimosa." ) ,
-                new Animal ( "Zeus" , R.drawable.imagen_perro_8 , Animal.TipoAnimal.PERRO , 3 , "Activo y protector." ) ,
-                new Animal ( "Oscar" , R.drawable.imagen_gato_8 , Animal.TipoAnimal.GATO , 1 , "Juguetón y curioso." ) ,
-                new Animal ( "Bailey" , R.drawable.imagen_perro_9 , Animal.TipoAnimal.PERRO , 6 , "Amistoso y cariñoso." ) ,
-                new Animal ( "Mia" , R.drawable.imagen_gato_9 , Animal.TipoAnimal.GATO , 4 , "Elegante y cariñosa." ) ,
-                new Animal ( "Charlie" , R.drawable.imagen_perro_10 , Animal.TipoAnimal.PERRO , 2 , "Enérgico y amigable." ) ,
-                new Animal ( "Luna" , R.drawable.imagen_gato_10 , Animal.TipoAnimal.GATO , 3 , "Curiosa y tranquila." )
-        ) );
+        listaAnimales = new ArrayList<>();
+        for (int i = 0; i < 999999; i++) {
+            String nombre = "Animal " + (i + 1);
+            Animal.TipoAnimal tipo = (i % 2 == 0) ? Animal.TipoAnimal.PERRO : Animal.TipoAnimal.GATO;
+            int edad = (int) (Math.random() * 10) + 1;  // Edad aleatoria entre 1 y 10
+            String descripcion = "Descripción del animal " + (i + 1);
+            int imagen = (i % 2 == 0) ? R.drawable.imagen_perro_1 : R.drawable.imagen_gato_1;
+            listaAnimales.add(new Animal(nombre, imagen, tipo, edad, descripcion));
+        }
     }
 
     /**
