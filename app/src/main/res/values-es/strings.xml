@@ -23,7 +23,7 @@
     <string name="ha_sido_eliminado">ha sido eliminado.</string>
     <string name="no_hay_animales_seleccionados_o_la_lista_est_vac_a">No hay animales seleccionados o la lista está vacía.</string>
     <string name="desactiva_los_filtros_para_poder_eliminar_un_animal">Desactiva los filtros para poder eliminar un animal.</string>
-    <string name="lista_vacia">lista vacia</string>
+    <string name="lista_vacia">Lista vacia.</string>
     <string name="lista_de_animales_inicializada_correctamente">Lista de animales inicializada correctamente.</string>
     <string name="no_se_encontraron_animales_que_coincidan_con_los_filtros">No se encontraron animales que coincidan con los filtros.</string>
     <string name="error_al_agregar_un_nuevo_animal">"Error al agregar un nuevo animal: "</string>
