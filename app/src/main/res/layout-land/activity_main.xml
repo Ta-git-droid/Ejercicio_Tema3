@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_primary"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="419dp"
+        android:layout_height="51dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logoCabecera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/icono_huella_perro"
+            app:layout_constraintEnd_toStartOf="@+id/titulo"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/huellas_perro"
+            app:tint="@color/md_theme_primaryFixed" />
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/busca_encuentra_y_adopta"
+            android:textColor="@color/md_theme_onSecondary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.153"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imagenPrincipal"
+        android:layout_width="319dp"
+        android:layout_height="165dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/perro_y_gato"
+        android:scaleType="fitStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:srcCompat="@drawable/perro_y_gato"
+        tools:ignore="VisualLintBounds"
+        tools:srcCompat="@drawable/perro_y_gato" />
+
+    <ToggleButton
+        android:id="@+id/filtroPerros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_weight="1"
+        android:background="@color/md_theme_inversePrimary"
+        android:padding="5dp"
+        android:textOff="@string/filtrar_perros"
+        android:textOn="@string/mostrando_perros"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imagenPrincipal"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <ToggleButton
+        android:id="@+id/filtroGatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:layout_weight="1"
+        android:background="@color/md_theme_inversePrimary"
+        android:padding="5dp"
+        android:textOff="@string/filtrar_gatos"
+        android:textOn="@string/mostrando_gatos"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/imagenPrincipal"
+        app:layout_constraintTop_toBottomOf="@+id/filtroPerros" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBotones"
+        android:layout_width="wrap_content"
+        android:layout_height="69dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/md_theme_primary"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.834"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+
+        <ImageButton
+            android:id="@+id/agregar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@color/md_theme_primaryFixed"
+            android:contentDescription="@string/Agregar"
+            app:srcCompat="@android:drawable/ic_input_add"
+            tools:ignore="ImageContrastCheck" />
+
+        <ImageButton
+            android:id="@+id/eliminar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@color/md_theme_primaryFixed"
+            android:contentDescription="@string/eliminar"
+            app:srcCompat="@android:drawable/ic_delete" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="352dp"
+        android:layout_height="317dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/md_theme_primaryFixed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutBotones"
+        app:layout_constraintVertical_bias="0.823" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutFavoritos"
+        android:layout_width="346dp"
+        android:layout_height="129dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/md_theme_primaryFixed"
+        android:orientation="vertical"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView"
+        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenPrincipal"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/textFavoritos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/lista_de_favoritos"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFavoritos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:scrollbars="horizontal" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

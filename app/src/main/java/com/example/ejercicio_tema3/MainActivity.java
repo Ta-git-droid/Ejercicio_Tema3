@@ -2,6 +2,7 @@ package com.example.ejercicio_tema3;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Configurar RecyclerView de favoritos
         configurarRecyclerViewFavoritos ();
+
+        this.setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 
     }
 
