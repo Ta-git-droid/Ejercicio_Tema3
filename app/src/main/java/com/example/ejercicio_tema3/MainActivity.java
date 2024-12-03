@@ -7,9 +7,15 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.view.ContextMenu;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +24,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ToggleButton togglePerros; // Botón de filtro para perros.
     private ToggleButton toggleGatos; // Botón de filtro para gatos.
+
+    TextView textView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +77,42 @@ public class MainActivity extends AppCompatActivity {
         // Configurar RecyclerView de favoritos
         configurarRecyclerViewFavoritos ();
 
+        // TabLayout
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        // Agregar el listener para los tabs
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Verificar si el tab seleccionado es el "Coming Soon"
+                if (tab.getText().equals("Coming Soon")) {
+                    // Mostrar un Snackbar con el mensaje "Próximamente"
+                    Snackbar.make(findViewById(R.id.main), "Próximamente", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // No necesitamos hacer nada aquí por ahora
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // No necesitamos hacer nada aquí por ahora
+            }
+        });
+
+
+
+
+
+        findViewById(R.id.toolbar).setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(this, v);
+            popup.getMenuInflater().inflate(R.menu.opciones, popup.getMenu());
+            popup.show();
+        });
+
+
+
     }
+
 
     /**
      * Inicializar las listas de animales (array, perros y gatos):
@@ -195,13 +241,16 @@ public class MainActivity extends AppCompatActivity {
             Animal nuevoAnimal = new Animal ( "Nuevo" , R.drawable.imagen_perro_1 , Animal.TipoAnimal.PERRO , 1 , getString ( R.string.nuevo_animal_a_adido ) );
             listaAnimales.add ( nuevoAnimal );
             animalAdapter.actualizarLista ( listaAnimales );
-            Toast.makeText ( this , getString ( R.string.animal_a_adido_a_la_lista ) , Toast.LENGTH_SHORT ).show ();
+            // Reemplazar Toast con SnackBar
+            Snackbar.make(findViewById(R.id.main), getString(R.string.animal_a_adido_a_la_lista), Snackbar.LENGTH_SHORT).show();
+            //Toast.makeText ( this , getString ( R.string.animal_a_adido_a_la_lista ) , Toast.LENGTH_SHORT ).show ();
             SpannableString toastMessage = new SpannableString ( getString ( R.string.pr_ximamente_se_implementar_una_forma_m_s_avanzada_de_a_adir_animales ) );
             toastMessage.setSpan ( new ForegroundColorSpan ( Color.RED ) , 0 , toastMessage.length () , 0 );
             Toast.makeText ( this , toastMessage , Toast.LENGTH_LONG ).show ();
         } catch (Exception e) {
             Log.e(TAG, getString( R.string.error_al_agregar_un_nuevo_animal) + e.getMessage(), e);
-            Toast.makeText(this, R.string.error_al_agregar_el_animal, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, R.string.error_al_agregar_el_animal, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.main), R.string.error_al_agregar_el_animal, Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -221,20 +270,24 @@ public class MainActivity extends AppCompatActivity {
                     Animal animalEliminado = listaAnimales.remove(posicionSeleccionada);
                     animalAdapter.actualizarLista(listaAnimales); // Actualizar la lista en el adaptador
                     // Mostrar mensaje de eliminación
-                    Toast.makeText(this, animalEliminado.getNombre() + getString(R.string.ha_sido_eliminado), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.main), animalEliminado.getNombre() + getString(R.string.ha_sido_eliminado), Snackbar.LENGTH_SHORT).show();
+                    //Toast.makeText(this, animalEliminado.getNombre() + getString(R.string.ha_sido_eliminado), Toast.LENGTH_SHORT).show();
                     // Restablecer la posición seleccionada en el adaptador
                     animalAdapter.setPosicionSeleccionada(-1); // Si tienes un método para resetear la posición
                 } else {
                     // Mostrar mensaje si no hay selección
-                    Toast.makeText(this, R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.main), R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Snackbar.LENGTH_SHORT).show();
+                    //Toast.makeText(this, R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Toast.LENGTH_SHORT).show();
                     Log.w(TAG, getString(R.string.no_se_seleccion_un_animal_para_eliminar));
                 }
             } else {
                 // Si la lista es null o está vacía
-                Toast.makeText(this, R.string.lista_vacia, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main), R.string.lista_vacia, Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(this, R.string.lista_vacia, Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, R.string.desactiva_los_filtros_para_poder_eliminar_un_animal, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.main), R.string.desactiva_los_filtros_para_poder_eliminar_un_animal, Snackbar.LENGTH_SHORT).show();
+            //Toast.makeText(this, R.string.desactiva_los_filtros_para_poder_eliminar_un_animal, Toast.LENGTH_SHORT).show();
             Log.w(TAG, getString(R.string.no_se_puede_eliminar_con_filtros_activos));
         }
     }
