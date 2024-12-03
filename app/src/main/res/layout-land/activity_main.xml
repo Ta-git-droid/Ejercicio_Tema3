@@ -43,7 +43,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.153"
+            app:layout_constraintHorizontal_bias="0.863"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -53,7 +53,7 @@
         android:layout_width="319dp"
         android:layout_height="165dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="36dp"
         android:contentDescription="@string/perro_y_gato"
         android:scaleType="fitStart"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,8 +83,8 @@
         android:id="@+id/filtroGatos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
         android:layout_weight="1"
         android:background="@color/md_theme_inversePrimary"
         android:padding="5dp"
@@ -98,13 +98,13 @@
         android:id="@+id/linearLayoutBotones"
         android:layout_width="wrap_content"
         android:layout_height="69dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="4dp"
         android:background="@color/md_theme_primary"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.834"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout">
 
@@ -132,8 +132,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="352dp"
-        android:layout_height="317dp"
+        android:layout_width="302dp"
+        android:layout_height="297dp"
         android:layout_marginBottom="4dp"
         android:background="@color/md_theme_primaryFixed"
         app:layout_constraintBottom_toBottomOf="parent"
