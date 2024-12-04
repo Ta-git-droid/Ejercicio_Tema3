@@ -35,4 +35,13 @@
     <string name="animal_nulo_en_la_posici_n">"Animal nulo en la posición "</string>
     <string name="a_adir">Añadir</string>
     <string name="elimina">Eliminar</string>
+    <string name="comida_para_gatos">Comida para Gatos</string>
+    <string name="gatos">Gatos</string>
+    <string name="perros">Perros</string>
+    <string name="comida">Comida para Gatos</string>
+    <string name="gato">Gatos</string>
+    <string name="perro">Perros</string>
+    <string name="cat">Gatos</string>
+    <string name="dog">Perros</string>
+    <string name="popup">PopUp</string>
 </resources>

@@ -2,12 +2,16 @@ package com.example.ejercicio_tema3;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -16,7 +20,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.view.ContextMenu;
 
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -24,6 +27,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -49,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton togglePerros; // Botón de filtro para perros.
     private ToggleButton toggleGatos; // Botón de filtro para gatos.
 
-    TextView textView1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
@@ -61,6 +63,23 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding ( systemBars.left , systemBars.top , systemBars.right , systemBars.bottom );
             return insets;
         } );
+
+
+        // Configurar el Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Habilitar el ícono de navegación (botón de "up")
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Muestra el botón de "up"
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.huellas_perro); // Establece el ícono de navegación
+        }
+        // Configurar el listener para el ícono de navegación
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Navegación activada", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Inicialización de listas de animales
         inicializarListas ();
@@ -79,38 +98,91 @@ public class MainActivity extends AppCompatActivity {
 
         // TabLayout
         TabLayout tabLayout = findViewById(R.id.tabLayout);
-        // Agregar el listener para los tabs
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                // Verificar si el tab seleccionado es el "Coming Soon"
-                if (tab.getText().equals("Coming Soon")) {
-                    // Mostrar un Snackbar con el mensaje "Próximamente"
-                    Snackbar.make(findViewById(R.id.main), "Próximamente", Snackbar.LENGTH_SHORT).show();
-                }
+                    Snackbar.make(tabLayout, "Funcionalidad disponible en próximas sesiones", Snackbar.LENGTH_LONG).show();
             }
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // No necesitamos hacer nada aquí por ahora
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // No necesitamos hacer nada aquí por ahora
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
 
 
+        // Registrar la vista para el menú contextual
+        View vistaContextual = findViewById(R.id.imagenPrincipal);
+        registerForContextMenu(vistaContextual);
 
 
+        // Asociar un elemento para abrir el menú emergente
+        TextView textViewAgregar = findViewById(R.id.PopUp);
+        textViewAgregar.setOnClickListener(v -> showPopUpMenu(v));
 
-        findViewById(R.id.toolbar).setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(this, v);
-            popup.getMenuInflater().inflate(R.menu.opciones, popup.getMenu());
-            popup.show();
-        });
-
+    }
 
 
+    // Método para crear el menú de opciones
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Infla el menú desde el archivo XML
+        getMenuInflater().inflate(R.menu.opciones, menu);
+        return true;
+    }
+    // Manejo de eventos cuando se selecciona un item del menú
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Crear un Intent para abrir una URL
+        if (item.getItemId() == R.id.itemGatos) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.anipedia.net/gatos/"));
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.itemPerros) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.anipedia.net/perros/"));
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // Crear el menú contextual
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // Inflar el menú contextual
+        getMenuInflater().inflate(R.menu.opciones, menu);
+    }
+    // Manejar la selección del ítem del menú
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Toast.makeText(this, "Seleccionaste: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return super.onContextItemSelected(item);
+    }
+
+
+    // Menú emergente
+    public void showPopUpMenu(View view) {
+        // Crear el PopupMenu en la vista que se le hace clic
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        // Inflar el menú desde el archivo XML existente
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.opciones, popupMenu.getMenu());
+        // Establecer el manejador de clics de los ítems del menú
+        popupMenu.setOnMenuItemClickListener( item -> {
+            if (item.getItemId() == R.id.itemGatos) {
+                // Acción para el item "Gatos"
+                Toast.makeText(MainActivity.this, "Seleccionaste Gatos", Toast.LENGTH_SHORT).show();
+            } else if (item.getItemId() == R.id.itemComidaGatos) {
+                // Acción para el item "Comida para Gatos"
+                Toast.makeText(MainActivity.this, "Seleccionaste Comida para Gatos", Toast.LENGTH_SHORT).show();
+            } else if (item.getItemId() == R.id.itemPerros) {
+                // Acción para el item "Perros"
+                Toast.makeText(MainActivity.this, "Seleccionaste Perros", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        } );
+
+        // Mostrar el PopupMenu
+        popupMenu.show();
     }
 
 
@@ -243,13 +315,11 @@ public class MainActivity extends AppCompatActivity {
             animalAdapter.actualizarLista ( listaAnimales );
             // Reemplazar Toast con SnackBar
             Snackbar.make(findViewById(R.id.main), getString(R.string.animal_a_adido_a_la_lista), Snackbar.LENGTH_SHORT).show();
-            //Toast.makeText ( this , getString ( R.string.animal_a_adido_a_la_lista ) , Toast.LENGTH_SHORT ).show ();
             SpannableString toastMessage = new SpannableString ( getString ( R.string.pr_ximamente_se_implementar_una_forma_m_s_avanzada_de_a_adir_animales ) );
             toastMessage.setSpan ( new ForegroundColorSpan ( Color.RED ) , 0 , toastMessage.length () , 0 );
             Toast.makeText ( this , toastMessage , Toast.LENGTH_LONG ).show ();
         } catch (Exception e) {
             Log.e(TAG, getString( R.string.error_al_agregar_un_nuevo_animal) + e.getMessage(), e);
-            //Toast.makeText(this, R.string.error_al_agregar_el_animal, Toast.LENGTH_SHORT).show();
             Snackbar.make(findViewById(R.id.main), R.string.error_al_agregar_el_animal, Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -263,7 +333,6 @@ public class MainActivity extends AppCompatActivity {
             if (listaAnimales != null && !listaAnimales.isEmpty()) {
                 // Obtener la posición seleccionada desde el adaptador
                 int posicionSeleccionada = animalAdapter.getPosicionSeleccionada();
-
                 // Verificar si hay un animal seleccionado
                 if (posicionSeleccionada != -1) {
                     // Eliminar el animal de la lista en la posición seleccionada
@@ -271,23 +340,19 @@ public class MainActivity extends AppCompatActivity {
                     animalAdapter.actualizarLista(listaAnimales); // Actualizar la lista en el adaptador
                     // Mostrar mensaje de eliminación
                     Snackbar.make(findViewById(R.id.main), animalEliminado.getNombre() + getString(R.string.ha_sido_eliminado), Snackbar.LENGTH_SHORT).show();
-                    //Toast.makeText(this, animalEliminado.getNombre() + getString(R.string.ha_sido_eliminado), Toast.LENGTH_SHORT).show();
                     // Restablecer la posición seleccionada en el adaptador
                     animalAdapter.setPosicionSeleccionada(-1); // Si tienes un método para resetear la posición
                 } else {
                     // Mostrar mensaje si no hay selección
                     Snackbar.make(findViewById(R.id.main), R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Snackbar.LENGTH_SHORT).show();
-                    //Toast.makeText(this, R.string.no_hay_animales_seleccionados_o_la_lista_est_vac_a, Toast.LENGTH_SHORT).show();
                     Log.w(TAG, getString(R.string.no_se_seleccion_un_animal_para_eliminar));
                 }
             } else {
                 // Si la lista es null o está vacía
                 Snackbar.make(findViewById(R.id.main), R.string.lista_vacia, Snackbar.LENGTH_SHORT).show();
-                //Toast.makeText(this, R.string.lista_vacia, Toast.LENGTH_SHORT).show();
             }
         } else {
             Snackbar.make(findViewById(R.id.main), R.string.desactiva_los_filtros_para_poder_eliminar_un_animal, Snackbar.LENGTH_SHORT).show();
-            //Toast.makeText(this, R.string.desactiva_los_filtros_para_poder_eliminar_un_animal, Toast.LENGTH_SHORT).show();
             Log.w(TAG, getString(R.string.no_se_puede_eliminar_con_filtros_activos));
         }
     }

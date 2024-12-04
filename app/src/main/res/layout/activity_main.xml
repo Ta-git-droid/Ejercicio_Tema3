@@ -10,8 +10,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="406dp"
+        android:layout_height="37dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -21,8 +21,8 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="408dp"
+        android:layout_height="38dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -30,23 +30,19 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Monday" />
+            android:text="@string/cat" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tuesday" />
+            android:text="@string/dog" />
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wednesday" />
     </com.google.android.material.tabs.TabLayout>
 
     <ImageView
         android:id="@+id/imagenPrincipal"
-        android:layout_width="412dp"
-        android:layout_height="245dp"
+        android:layout_width="409dp"
+        android:layout_height="234dp"
         android:contentDescription="@string/perro_y_gato"
         android:scaleType="fitStart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,6 +108,15 @@
             app:srcCompat="@android:drawable/ic_input_add"
             tools:ignore="ImageContrastCheck" />
 
+        <TextView
+            android:id="@+id/PopUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/popup"
+            android:textColor="@color/ic_launcher_background"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
         <ImageButton
             android:id="@+id/eliminar"
             android:layout_width="0dp"
@@ -125,8 +130,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="379dp"
-        android:layout_height="322dp"
+        android:layout_width="364dp"
+        android:layout_height="283dp"
         android:background="@color/md_theme_primaryFixed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
