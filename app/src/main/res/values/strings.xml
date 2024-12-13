@@ -33,4 +33,6 @@
     <string name="posici_n_seleccionada_fuera_de_rango_reiniciando_a_1">Posición seleccionada fuera de rango. Reiniciando a -1.</string>
     <string name="la_posici_n_seleccionada_es_inv_lida_reiniciando">La posición seleccionada es inválida. Reiniciando.</string>
     <string name="animal_nulo_en_la_posici_n">"Animal nulo en la posición "</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

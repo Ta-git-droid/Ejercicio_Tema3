@@ -1,9 +1,15 @@
 package com.example.ejercicio_tema3;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
+/**
+ * Representa un animal con sus características.
+ */
 
-public class Animal {
+public class Animal  implements Parcelable {
 
     private String nombre;
     private int imagen; // ID del recurso de la imagen
@@ -11,11 +17,13 @@ public class Animal {
     private int edad; // En años
     private String descripcion;
 
+
     // Enumeración para representar los tipos de animales.
     public enum TipoAnimal {
         PERRO,
         GATO
     }
+
 
     // Constructor.
     public Animal(String nombre, int imagen, TipoAnimal tipo, int edad, String descripcion) {
@@ -25,6 +33,7 @@ public class Animal {
         this.edad = edad;
         this.descripcion = descripcion;
     }
+
 
     // Getters y Setters.
     public String getNombre() {
@@ -56,7 +65,11 @@ public class Animal {
     }
 
     public void setEdad(int edad) {
-        this.edad = edad;
+        if (edad >= 0) {
+            this.edad = edad;
+        } else {
+            throw new IllegalArgumentException("La edad no puede ser negativa");
+        }
     }
 
     public String getDescripcion() {
@@ -64,7 +77,48 @@ public class Animal {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null && !descripcion.trim().isEmpty()) {
+            this.descripcion = descripcion;
+        } else {
+            throw new IllegalArgumentException("La descripción no puede estar vacía");
+        }
+    }
+
+
+    // Métodos para Parceable
+
+    protected Animal (Parcel in) {
+        nombre = in.readString ();
+        imagen = in.readInt();
+        tipo = TipoAnimal.valueOf ( in.readString () );
+        edad = in.readInt ();
+        descripcion = in.readString ();
+    }
+
+    public static final Creator<Animal> CREATOR = new Creator<Animal> () {
+        @Override
+        public Animal createFromParcel(Parcel parcel) {
+            return new Animal(parcel);
+        }
+
+        @Override
+        public Animal[] newArray(int i) {
+            return new Animal[i];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel , int i) {
+        parcel.writeString( nombre );
+        parcel.writeInt ( imagen );
+        parcel.writeString ( tipo.name () );
+        parcel.writeInt ( edad );
+        parcel.writeString ( descripcion );
     }
 
     // Método toString para mostrar la información del animal.
