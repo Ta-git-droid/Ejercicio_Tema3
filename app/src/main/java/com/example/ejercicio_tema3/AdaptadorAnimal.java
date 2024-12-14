@@ -1,5 +1,6 @@
 package com.example.ejercicio_tema3;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,17 +25,26 @@ import java.util.Set;
  */
 public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.AnimalViewHolder> {
 
-    private List<Animal> listaAnimales; // Lista principal de animales a mostrar.
+    private List<Animal> listaAnimalesOriginal; // Lista original de animales (sin filtrar)
+    private List<Animal> listaAnimalesFiltrada; // Lista filtrada de animales
     private int posicionSeleccionada = -1; // Posición del elemento actualmente seleccionado.
     private final Set<Animal> favoritos = new HashSet<>(); // Conjunto de animales marcados como favoritos.
     private favoritosActualizadosListener listenerFavoritos; // Listener para gestionar actualizaciones de favoritos.
+    private Context context;
+
+    // Constructor que recibe Context y List<Animal>
+    public AdaptadorAnimal(Context context, List<Animal> listaAnimales) {
+        this.context = context;
+        this.listaAnimalesOriginal = listaAnimales;
+    }
 
     /**
      * Constructor del adaptador.
      * Lista inicial de animales a mostrar en el RecyclerView.
      */
     public AdaptadorAnimal(List<Animal> listaAnimales) {
-        this.listaAnimales = (listaAnimales != null) ? listaAnimales : new ArrayList<>();
+        this.listaAnimalesOriginal = (listaAnimales != null) ? listaAnimales : new ArrayList<>();
+        this.listaAnimalesFiltrada = new ArrayList<>(listaAnimalesOriginal);
     }
 
     /**
@@ -50,7 +60,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
      * Actualiza visualmente el RecyclerView.
      */
     public void setPosicionSeleccionada(int posicion) {
-        if (posicion >= listaAnimales.size()) {
+        if (posicion >= listaAnimalesFiltrada.size()) {
             posicionSeleccionada = -1; // Reinicia si la posición ya no es válida
         } else {
             posicionSeleccionada = posicion;
@@ -72,7 +82,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
     }
 
     /**
-     * Se valida si la posición seleccionada sigue siendo valida.
+     * Se valida si la posición seleccionada sigue siendo válida.
      * Si la posición seleccionada está fuera de los límites de la lista, se reinicia a -1.
      * Se obtiene el animal correspondiente a la posición actual en la lista.
      * Se configuran los valores en el ViewHolder para mostrar los datos del animal en la interfaz.
@@ -84,10 +94,10 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
     @Override
     public void onBindViewHolder(@NonNull AnimalViewHolder holder, int position) {
         // Validar si la posición seleccionada sigue siendo válida
-        if (posicionSeleccionada >= listaAnimales.size()) {
+        if (posicionSeleccionada >= listaAnimalesFiltrada.size()) {
             posicionSeleccionada = -1; // Reinicia si la selección ya no es válida
         }
-        Animal animal = listaAnimales.get(position); // Obtener el animal correspondiente a la posición actual.
+        Animal animal = listaAnimalesFiltrada.get(position); // Obtener el animal correspondiente a la posición actual.
         // Configurar los valores en el ViewHolder.
         holder.nombre.setText(animal.getNombre());
         holder.edad.setText(holder.itemView.getContext().getString(R.string.edad_placeholder, animal.getEdad()));
@@ -122,11 +132,11 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
     }
 
     /**
-     * Devuelve el tamaño de la lista de animales.
+     * Devuelve el tamaño de la lista filtrada de animales.
      */
     @Override
     public int getItemCount() {
-        return listaAnimales.size();
+        return listaAnimalesFiltrada.size();
     }
 
     /**
@@ -134,10 +144,15 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
      */
     public void actualizarLista(List<Animal> nuevaLista) {
         if (nuevaLista != null) {
-            listaAnimales = nuevaLista;
+            // Si la lista no es nula, actualizamos la lista original
+            listaAnimalesOriginal = nuevaLista;
+            // Si también usas una lista filtrada, puedes crearla aquí (si es necesario)
+            listaAnimalesFiltrada = new ArrayList<>(nuevaLista);
+            // Notificar al adaptador que los datos han cambiado
             notifyDataSetChanged();
         }
     }
+
 
     /**
      * Establece un listener para gestionar actualizaciones en la lista de favoritos.

@@ -2,13 +2,20 @@ package com.example.ejercicio_tema3;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,68 +24,67 @@ import java.util.ArrayList;
  */
 public class FragmentAnimal extends Fragment {
 
+    private ArrayList<Animal> listaAnimales; // Lista completa de animales
+    private RecyclerView recyclerViewAnimal; // RecyclerView para mostrar la lista
+    private AdaptadorAnimal adaptadorAnimal; // Adaptador para RecyclerView
 
-    // Lista de animales que se mostraran en el RecyclerView
-    private ArrayList<Animal> animalArrayList;
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public FragmentAnimal() {
-        // Required empty public constructor
+        // Constructor vacío necesario para el Fragment
     }
 
-
-    // Constructor del fragmento en el que se pasa el conjunto de datos
-    public FragmentAnimal (ArrayList<Animal> animalArrayList) {
-        this.animalArrayList = animalArrayList;
-    }
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentAnimal.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentAnimal newInstance(String param1 , String param2) {
-        FragmentAnimal fragment = new FragmentAnimal ();
-        Bundle args = new Bundle ();
-        args.putString ( ARG_PARAM1 , param1 );
-        args.putString ( ARG_PARAM2 , param2 );
-        fragment.setArguments ( args );
+    // Método para crear una nueva instancia del fragmento y pasarle la lista de animales
+    public static FragmentAnimal newInstance(ArrayList<Animal> animalArrayList) {
+        FragmentAnimal fragment = new FragmentAnimal();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("animales", animalArrayList);  // Guardamos la lista en el Bundle
+        fragment.setArguments(args);  // Asignamos los argumentos al fragmento
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate ( savedInstanceState );
-        // comprobamos si tenemos datos del ArrayList
-        if (this.animalArrayList == null) {
-            // Comprobamos si los datos se han pasado en un Bundel
-            if (getArguments () != null) {
-                this.animalArrayList = getArguments ().getParcelableArrayList ("animales");
-                System.out.println ("Datos en OnCreate: " + this.animalArrayList);
-            }
+        super.onCreate(savedInstanceState);
+
+        // Recuperamos los datos del Bundle solo una vez
+        if (getArguments() != null) {
+            listaAnimales = getArguments().getParcelableArrayList("animales");
+            Log.d("FragmentAnimal", "Datos en onCreate: " + listaAnimales);
+        } else {
+            listaAnimales = new ArrayList<>(); // Si no hay datos, inicializamos con una lista vacía
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater , ViewGroup container ,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate (R.layout.fragment_animal, container, false);
+        // Infla el layout para este fragmento
+        View view = inflater.inflate(R.layout.fragment_animal, container, false);
 
-        return inflater.inflate ( R.layout.fragment_animal , container , false );
+        // Inicializa RecyclerView
+        recyclerViewAnimal = view.findViewById(R.id.recyclerViewAnimal);
+
+        // Asignar un LayoutManager al RecyclerView (vertical en este caso)
+        recyclerViewAnimal.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Crear el adaptador con la lista de animales
+        adaptadorAnimal = new AdaptadorAnimal(listaAnimales);
+
+        // Asignar el adaptador al RecyclerView
+        recyclerViewAnimal.setAdapter(adaptadorAnimal);
+
+        return view;
     }
+
+
+
+
+
+
+    public void actualizarLista(List<Animal> listaFiltrada) {
+        adaptadorAnimal.actualizarLista(listaFiltrada);
+        adaptadorAnimal.notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
+    }
+
+
 }
