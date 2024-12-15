@@ -131,6 +131,17 @@
 
     </LinearLayout>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerViewListaAnimales"
+        android:name="com.example.ejercicio_tema3.FragmentAnimal"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutFavoritos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutBotones"
+        tools:layout="@layout/fragment_animal" />
+
     <LinearLayout
         android:id="@+id/linearLayoutFavoritos"
         android:layout_width="match_parent"
@@ -162,15 +173,5 @@
             android:scaleY="0.7"
             android:scrollbars="horizontal" />
     </LinearLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerViewListaAnimales"
-        android:name="com.example.ejercicio_tema3.FragmentAnimal"
-        android:layout_width="394dp"
-        android:layout_height="397dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutFavoritos"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutBotones" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

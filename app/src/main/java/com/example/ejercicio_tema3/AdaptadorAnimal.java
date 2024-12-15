@@ -18,60 +18,37 @@ import java.util.Set;
 
 /**
  * Adaptador:
- * Maneja y muestra una lista de objetos Animal en un RecyclerView.
- * Permite seleccionar un elemento.
- * Gestionar favoritos.
- * Actualizar dinámicamente la lista.
+ * Este adaptador maneja y muestra una lista de objetos Animal en un RecyclerView.
+ * Permite seleccionar un animal, agregarlo o eliminarlo de los favoritos.
+ * Además, permite actualizar dinámicamente la lista de animales y favoritos.
  */
 public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.AnimalViewHolder> {
 
-    private List<Animal> listaAnimalesOriginal; // Lista original de animales (sin filtrar)
-    private List<Animal> listaAnimalesFiltrada; // Lista filtrada de animales
-    private int posicionSeleccionada = -1; // Posición del elemento actualmente seleccionado.
-    private final Set<Animal> favoritos = new HashSet<>(); // Conjunto de animales marcados como favoritos.
-    private favoritosActualizadosListener listenerFavoritos; // Listener para gestionar actualizaciones de favoritos.
-    private Context context;
-    private List<Animal> listaFavoritos; // Lista de favoritos
-    private MainActivity mainActivity;
+    private Context context; // Contexto asociado a la aplicación o actividad.
+    private List<Animal> listaAnimales; // Lista de animales (puede estar filtrada).
+    private Set<Animal> favoritos = new HashSet<>(); // Conjunto de animales favoritos (para evitar duplicados).
+    private int posicionSeleccionada = -1; // Índice del animal actualmente seleccionado.
+    private OnAnimalSeleccionadoListener listener; // Listener para manejar la selección de un animal.
+    private FavoritosActualizadosListener favoritosListener; // Listener para manejar actualizaciones en la lista de favoritos.
+    private Animal animalSeleccionado; // Referencia al animal seleccionado.
 
-    // Constructor modificado para recibir lista de favoritos y MainActivity
-    public AdaptadorAnimal(Context context, List<Animal> listaAnimales, List<Animal> listaFavoritos, MainActivity mainActivity) {
+    /**
+     * Constructor con listas de animales y favoritos.
+     * @param context Contexto de la aplicación.
+     * @param listaAnimales Lista de animales que se mostrará en el RecyclerView.
+     * @param listaFavoritos Lista de animales marcados como favoritos.
+     */
+    public AdaptadorAnimal(Context context, List<Animal> listaAnimales, List<Animal> listaFavoritos) {
         this.context = context;
-        this.listaAnimalesOriginal = listaAnimales != null ? listaAnimales : new ArrayList<>();
-        this.listaAnimalesFiltrada = new ArrayList<>(this.listaAnimalesOriginal);
-        this.listaFavoritos = listaFavoritos != null ? listaFavoritos : new ArrayList<>();
-        this.mainActivity = mainActivity; // Guardamos la referencia de MainActivity
-    }
-
-
-
-
-    /**
-     * Obtiene la posición del elemento seleccionado.
-     * Posición seleccionada (-1 si no hay ninguno).
-     */
-    public int getPosicionSeleccionada() {
-        return posicionSeleccionada;
+        this.listaAnimales = listaAnimales;
+        this.favoritos.addAll(listaFavoritos); // Sincronizamos la lista de favoritos con los animales favoritos.
     }
 
     /**
-     * Establece la posición seleccionada.
-     * Actualiza visualmente el RecyclerView.
-     */
-    public void setPosicionSeleccionada(int posicion) {
-        if (posicion >= listaAnimalesFiltrada.size()) {
-            posicionSeleccionada = -1; // Reinicia si la posición ya no es válida
-        } else {
-            posicionSeleccionada = posicion;
-        }
-        notifyDataSetChanged(); // Refrescar la vista
-    }
-
-    /**
-     * Se infla la vista del ítem desde el layout XML.
-     * La vista del ítem es un archivo XML que describe cómo se ha de ver un solo ítem en el RecyclerView.
-     * Crea y devuelve un nuevo AnimalViewHolder con la vista inflada.
-     * El ViewHolder es responsable de almacenar las vistas del ítem y rehusarlas.
+     * Inflar el layout de cada item y crear el ViewHolder.
+     * @param parent ViewGroup padre donde se inflará el item.
+     * @param viewType Tipo de vista a inflar (no usado aquí).
+     * @return Un nuevo AnimalViewHolder con el layout inflado.
      */
     @NonNull
     @Override
@@ -81,113 +58,123 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
     }
 
     /**
-     * Se valida si la posición seleccionada sigue siendo válida.
-     * Si la posición seleccionada está fuera de los límites de la lista, se reinicia a -1.
-     * Se obtiene el animal correspondiente a la posición actual en la lista.
-     * Se configuran los valores en el ViewHolder para mostrar los datos del animal en la interfaz.
-     * Se actualiza el icono de favorito según el estado actual.
-     * Maneja el clic en el icono de favoritos.
-     * Actualiza el fondo del ítem si está seleccionado.
-     * Se establece el evento de clic para seleccionar un elemento.
+     * Configura los datos de cada ítem de la lista de animales.
+     * @param holder El ViewHolder donde se colocarán los datos.
+     * @param position Posición del animal en la lista.
      */
     @Override
     public void onBindViewHolder(@NonNull AnimalViewHolder holder, int position) {
-        // Validar si la posición seleccionada sigue siendo válida
-        if (posicionSeleccionada >= listaAnimalesFiltrada.size()) {
-            posicionSeleccionada = -1; // Reinicia si la selección ya no es válida
+        // Verificamos que la posición seleccionada no esté fuera de la lista
+        if (posicionSeleccionada >= listaAnimales.size()) {
+            posicionSeleccionada = -1;
         }
-        Animal animal = listaAnimalesFiltrada.get(position); // Obtener el animal correspondiente a la posición actual.
-        // Configurar los valores en el ViewHolder.
+
+        Animal animal = listaAnimales.get(position);
+
+        // Asignar los valores de texto e imagen del animal al ViewHolder
         holder.nombre.setText(animal.getNombre());
-        holder.edad.setText(holder.itemView.getContext().getString(R.string.edad_placeholder, animal.getEdad()));
+        holder.edad.setText(context.getString(R.string.edad_placeholder, animal.getEdad()));
         holder.descripcion.setText(animal.getDescripcion());
         holder.imagen.setImageResource(animal.getImagen());
-        // Actualizar el ícono de favorito según el estado actual.
-        holder.iconoFavorito.setImageResource(favoritos.contains(animal) ? R.drawable.corazon_relleno : R.drawable.corazon_vacio );
-        // Manejar el clic en el ícono de favorito.
+
+        // Actualizar el icono de favorito según si el animal está marcado como favorito
+        holder.iconoFavorito.setImageResource(favoritos.contains(animal) ? R.drawable.corazon_relleno : R.drawable.corazon_vacio);
+
+        // Acción cuando el usuario hace clic en el icono de favorito
         holder.iconoFavorito.setOnClickListener(v -> {
             if (favoritos.contains(animal)) {
-                favoritos.remove(animal);
-                holder.iconoFavorito.setImageResource(R.drawable.corazon_vacio);
+                favoritos.remove(animal); // Eliminar del conjunto de favoritos
+                holder.iconoFavorito.setImageResource(R.drawable.corazon_vacio); // Cambiar el icono a vacío
             } else {
-                favoritos.add(animal);
-                holder.iconoFavorito.setImageResource(R.drawable.corazon_relleno);
+                favoritos.add(animal); // Agregar al conjunto de favoritos
+                holder.iconoFavorito.setImageResource(R.drawable.corazon_relleno); // Cambiar el icono a relleno
             }
-            // Notificar al listener sobre los cambios en la lista de favoritos.
-            if (listenerFavoritos != null) {
-                listenerFavoritos.favoritosActualizados(new ArrayList<>(favoritos));
+
+            // Notificar al listener de favoritos que la lista ha cambiado
+            if (favoritosListener != null) {
+                favoritosListener.favoritosActualizados(new ArrayList<>(favoritos));
             }
         });
-        // Actualizar el fondo si está seleccionado
-        holder.itemView.setBackgroundColor(posicionSeleccionada == position ? Color.LTGRAY : Color.TRANSPARENT );
-        // Evento de clic para seleccionar un elemento.
+
+        // Cambiar el color de fondo si el animal está seleccionado
+        holder.itemView.setBackgroundColor(posicionSeleccionada == position ? Color.LTGRAY : Color.TRANSPARENT);
+
+        // Evento de clic para seleccionar un animal
         holder.itemView.setOnClickListener(v -> {
             int posicionAnterior = posicionSeleccionada;
-            posicionSeleccionada = holder.getAdapterPosition();
-            // Actualizar el fondo de los elementos afectados.
-            if (posicionAnterior != -1) notifyItemChanged(posicionAnterior);
-            notifyItemChanged(posicionSeleccionada);
+            posicionSeleccionada = holder.getAdapterPosition(); // Actualizar la posición seleccionada
+            if (posicionAnterior != -1) notifyItemChanged(posicionAnterior); // Notificar que el ítem anterior cambió
+            notifyItemChanged(posicionSeleccionada); // Notificar que el ítem actual cambió
+
+            if (listener != null) {
+                listener.onAnimalSeleccionado(posicionSeleccionada); // Llamar al listener para manejar la selección
+            }
         });
     }
 
-
     /**
-     * Devuelve el tamaño de la lista filtrada de animales.
+     * Devuelve el tamaño de la lista de animales.
+     * @return El número de elementos en la lista de animales.
      */
     @Override
     public int getItemCount() {
-        if (listaAnimalesFiltrada != null) {
-            return listaAnimalesFiltrada.size();
-        } else {
-            return 0;
-        }
+        return listaAnimales.size();
     }
+
 
     /**
      * Actualiza la lista de animales en el adaptador.
+     * @param nuevaListaAnimales La nueva lista de animales.
      */
-    public void actualizarLista(List<Animal> nuevaLista) {
-        if (nuevaLista != null) {
-            // Actualiza la lista original
-            listaAnimalesOriginal = nuevaLista;
-            // Actualiza la lista filtrada (puedes aplicar un filtro si es necesario)
-            listaAnimalesFiltrada = new ArrayList<>(nuevaLista);
-            // Notificar al adaptador que los datos han cambiado
-            notifyDataSetChanged();
+    public void actualizarLista(List<Animal> nuevaListaAnimales) {
+        if (nuevaListaAnimales != null) {
+            this.listaAnimales.clear(); // Limpiar la lista de animales actual
+            this.listaAnimales.addAll(nuevaListaAnimales); // Añadir los nuevos animales
+            // Eliminar animales de la lista de favoritos que ya no están en la lista de animales
+            favoritos.removeIf(animal -> !nuevaListaAnimales.contains(animal));
+            notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
         }
     }
 
-
-
-
     /**
-     * Establece un listener para gestionar actualizaciones en la lista de favoritos.
-     * Recibirá las actualizaciones.
+     * Obtener el animal seleccionado en el RecyclerView.
+     * @return El animal seleccionado o null si no hay ninguno seleccionado.
      */
-    public void setFavoritosActualizadosListener(favoritosActualizadosListener listener) {
-        this.listenerFavoritos = listener;
+    public Animal obtenerAnimalSeleccionado() {
+        if (posicionSeleccionada != -1 && posicionSeleccionada < listaAnimales.size()) {
+            animalSeleccionado = listaAnimales.get(posicionSeleccionada); // Obtener el animal en la posición seleccionada
+            return animalSeleccionado;
+        }
+        return null; // Si no hay animal seleccionado, retornar null
     }
 
     /**
-     * Interfaz para gestionar actualizaciones en la lista de favoritos.
+     * Interfaz para manejar la selección de un animal.
      */
-    public interface favoritosActualizadosListener {
-        void favoritosActualizados(List<Animal> listaFavoritos);
+    public interface OnAnimalSeleccionadoListener {
+        void onAnimalSeleccionado(int posicion); // Método que se llama cuando un animal es seleccionado
     }
 
     /**
-     * ViewHolder para representar cada elemento de la lista de animales.
-     * Contiene referencias a las vistas de un ítem.
+     * Interfaz para manejar actualizaciones en la lista de favoritos.
+     */
+    public interface FavoritosActualizadosListener {
+        void favoritosActualizados(List<Animal> listaFavoritosActualizada); // Método que se llama cuando los favoritos se actualizan
+    }
+
+    /**
+     * ViewHolder que representa un item de la lista de animales.
      */
     public static class AnimalViewHolder extends RecyclerView.ViewHolder {
-        TextView nombre, edad, descripcion; // Vistas de texto
-        ImageView imagen, iconoFavorito; // Vistas de imagen
+        TextView nombre, edad, descripcion; // Vistas de texto para nombre, edad y descripción
+        ImageView imagen, iconoFavorito; // Vistas de imagen para la imagen del animal y el icono de favorito
+
         /**
-         * Constructor del ViewHolder
+         * Constructor que inicializa las vistas del item.
+         * @param itemView La vista del item en el RecyclerView.
          */
         public AnimalViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Inicializar las vistas del ítem.
             nombre = itemView.findViewById(R.id.nombreAnimal);
             edad = itemView.findViewById(R.id.edadAnimal);
             descripcion = itemView.findViewById(R.id.descripcionAnimal);
@@ -195,11 +182,4 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
             iconoFavorito = itemView.findViewById(R.id.iconoFavorito);
         }
     }
-
-    // Método para actualizar la lista de favoritos
-    public void actualizarFavoritos(List<Animal> nuevosFavoritos) {
-        this.listaFavoritos = nuevosFavoritos;
-        notifyDataSetChanged();  // Esto actualizará el RecyclerView de favoritos
-    }
-
 }

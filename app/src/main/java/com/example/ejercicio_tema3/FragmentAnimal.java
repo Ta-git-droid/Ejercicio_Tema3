@@ -2,94 +2,89 @@ package com.example.ejercicio_tema3;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentAnimal#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragmento que representa la lista de animales en la interfaz de usuario.
+ * Se encarga de gestionar y mostrar la lista de animales, permitiendo filtrar por tipo o nombre.
+ * Además, gestiona la actualización y eliminación de animales en la lista.
  */
 public class FragmentAnimal extends Fragment {
 
     private RecyclerView recyclerView;
-    private AdaptadorAnimal adaptador;
+    private AdaptadorAnimal adaptadorAnimal;
     private List<Animal> listaAnimales;
+    private List<Animal> listaAnimalesFiltrados;
 
-    public FragmentAnimal() {
-        // Constructor vacío requerido
-    }
-
-    /**
-     * Crea una nueva instancia del Fragment y pasa la lista de animales.
-     */
-    public static FragmentAnimal newInstance(List<Animal> listaAnimales) {
-        FragmentAnimal fragment = new FragmentAnimal();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList("animales", new ArrayList<>(listaAnimales)); // Asegúrate de pasar una lista de Parcelable
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-    /**
-     * Infla el layout del Fragment y configura el RecyclerView.
-     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_animal, container, false);
-
-        recyclerView = view.findViewById(R.id.recyclerViewAnimal);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Asegúrate de que los argumentos no sean null y de que la lista esté bien inicializada
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Recuperamos los argumentos pasados al fragmento y verificamos si la lista de animales es null
         if (getArguments() != null) {
             listaAnimales = getArguments().getParcelableArrayList("animales");
-        }
 
-        // Si la lista es nula, inicialízala para evitar el NullPointerException
-        if (listaAnimales == null) {
+            // Si la lista es null, la inicializamos como una lista vacía
+            if (listaAnimales == null) {
+                listaAnimales = new ArrayList<>();
+            }
+
+            // Inicializamos la lista filtrada con los mismos elementos que la lista original
+            listaAnimalesFiltrados = new ArrayList<>(listaAnimales);
+        } else {
+            // Si no hay argumentos, inicializamos las listas como vacías
             listaAnimales = new ArrayList<>();
-        }
-
-        // Inicializar y configurar el adaptador
-        adaptador = new AdaptadorAnimal(getContext(), listaAnimales, new ArrayList<>(), (MainActivity) getActivity());
-        recyclerView.setAdapter(adaptador);
-
-        return view;
-    }
-
-
-
-    /**
-     * Método para actualizar la lista de animales filtrados en el RecyclerView.
-     * Se invoca cuando cambian los filtros en la actividad.
-     */
-    public void actualizarLista(List<Animal> nuevaLista) {
-        if (nuevaLista != null) {
-            listaAnimales = nuevaLista;  // Actualiza la lista de animales en el Fragment
-            adaptador.actualizarLista(listaAnimales);  // Actualiza la vista del RecyclerView
+            listaAnimalesFiltrados = new ArrayList<>();
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflamos el layout del fragmento
+        View rootView = inflater.inflate(R.layout.fragment_animal, container, false);
+        recyclerView = rootView.findViewById(R.id.recyclerViewAnimal);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Verificamos si la lista de animales no es nula antes de crear el adaptador
+        if (listaAnimales != null) {
+            // Inicializamos el adaptador con la lista de animales filtrados
+            adaptadorAnimal = new AdaptadorAnimal(getContext(), listaAnimalesFiltrados, new ArrayList<>());
+            recyclerView.setAdapter(adaptadorAnimal);
+        }
+
+        return rootView;
+    }
+
     /**
-     * Obtener la posición seleccionada para eliminar un animal.
-     * Asume que el adaptador tiene un método para obtener la posición seleccionada.
+     * Método para actualizar la lista de animales en el fragmento.
+     * Este método es útil cuando la lista de animales ha cambiado o se ha actualizado.
+     *
+     * @param listaAnimales Lista de animales actualizada.
      */
-    public int obtenerPosicionSeleccionada() {
-        return adaptador.getPosicionSeleccionada();  // Implementar en el adaptador si es necesario
+    public void actualizarLista(List<Animal> listaAnimales) {
+        if (adaptadorAnimal != null && listaAnimales != null) {
+            this.listaAnimales = listaAnimales;
+            listaAnimalesFiltrados = new ArrayList<>(listaAnimales); // Reiniciamos la lista filtrada
+            // Actualizamos el adaptador con la nueva lista filtrada
+            adaptadorAnimal.actualizarLista(listaAnimalesFiltrados);
+        }
+    }
+
+    /**
+     * Obtener el adaptador actual del RecyclerView.
+     * Este método permite acceder al adaptador actual para realizar operaciones como actualizar la lista.
+     *
+     * @return El adaptador del RecyclerView que maneja la lista de animales.
+     */
+    public AdaptadorAnimal getAdaptadorAnimal() {
+        return adaptadorAnimal;
     }
 }
