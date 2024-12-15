@@ -24,67 +24,72 @@ import java.util.List;
  */
 public class FragmentAnimal extends Fragment {
 
-    private ArrayList<Animal> listaAnimales; // Lista completa de animales
-    private RecyclerView recyclerViewAnimal; // RecyclerView para mostrar la lista
-    private AdaptadorAnimal adaptadorAnimal; // Adaptador para RecyclerView
-
+    private RecyclerView recyclerView;
+    private AdaptadorAnimal adaptador;
+    private List<Animal> listaAnimales;
 
     public FragmentAnimal() {
-        // Constructor vacío necesario para el Fragment
+        // Constructor vacío requerido
     }
 
-    // Método para crear una nueva instancia del fragmento y pasarle la lista de animales
-    public static FragmentAnimal newInstance(ArrayList<Animal> animalArrayList) {
+    /**
+     * Crea una nueva instancia del Fragment y pasa la lista de animales.
+     */
+    public static FragmentAnimal newInstance(List<Animal> listaAnimales) {
         FragmentAnimal fragment = new FragmentAnimal();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("animales", animalArrayList);  // Guardamos la lista en el Bundle
-        fragment.setArguments(args);  // Asignamos los argumentos al fragmento
+        args.putParcelableArrayList("animales", new ArrayList<>(listaAnimales)); // Asegúrate de pasar una lista de Parcelable
+        fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        // Recuperamos los datos del Bundle solo una vez
-        if (getArguments() != null) {
-            listaAnimales = getArguments().getParcelableArrayList("animales");
-            Log.d("FragmentAnimal", "Datos en onCreate: " + listaAnimales);
-        } else {
-            listaAnimales = new ArrayList<>(); // Si no hay datos, inicializamos con una lista vacía
-        }
-    }
-
+    /**
+     * Infla el layout del Fragment y configura el RecyclerView.
+     */
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Infla el layout para este fragmento
         View view = inflater.inflate(R.layout.fragment_animal, container, false);
 
-        // Inicializa RecyclerView
-        recyclerViewAnimal = view.findViewById(R.id.recyclerViewAnimal);
+        recyclerView = view.findViewById(R.id.recyclerViewAnimal);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Asignar un LayoutManager al RecyclerView (vertical en este caso)
-        recyclerViewAnimal.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Asegúrate de que los argumentos no sean null y de que la lista esté bien inicializada
+        if (getArguments() != null) {
+            listaAnimales = getArguments().getParcelableArrayList("animales");
+        }
 
-        // Crear el adaptador con la lista de animales
-        adaptadorAnimal = new AdaptadorAnimal(listaAnimales);
+        // Si la lista es nula, inicialízala para evitar el NullPointerException
+        if (listaAnimales == null) {
+            listaAnimales = new ArrayList<>();
+        }
 
-        // Asignar el adaptador al RecyclerView
-        recyclerViewAnimal.setAdapter(adaptadorAnimal);
+        // Inicializar y configurar el adaptador
+        adaptador = new AdaptadorAnimal(getContext(), listaAnimales, new ArrayList<>(), (MainActivity) getActivity());
+        recyclerView.setAdapter(adaptador);
 
         return view;
     }
 
 
 
-
-
-
-    public void actualizarLista(List<Animal> listaFiltrada) {
-        adaptadorAnimal.actualizarLista(listaFiltrada);
-        adaptadorAnimal.notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
+    /**
+     * Método para actualizar la lista de animales filtrados en el RecyclerView.
+     * Se invoca cuando cambian los filtros en la actividad.
+     */
+    public void actualizarLista(List<Animal> nuevaLista) {
+        if (nuevaLista != null) {
+            listaAnimales = nuevaLista;  // Actualiza la lista de animales en el Fragment
+            adaptador.actualizarLista(listaAnimales);  // Actualiza la vista del RecyclerView
+        }
     }
 
-
+    /**
+     * Obtener la posición seleccionada para eliminar un animal.
+     * Asume que el adaptador tiene un método para obtener la posición seleccionada.
+     */
+    public int obtenerPosicionSeleccionada() {
+        return adaptador.getPosicionSeleccionada();  // Implementar en el adaptador si es necesario
+    }
 }

@@ -31,21 +31,20 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
     private final Set<Animal> favoritos = new HashSet<>(); // Conjunto de animales marcados como favoritos.
     private favoritosActualizadosListener listenerFavoritos; // Listener para gestionar actualizaciones de favoritos.
     private Context context;
+    private List<Animal> listaFavoritos; // Lista de favoritos
+    private MainActivity mainActivity;
 
-    // Constructor que recibe Context y List<Animal>
-    public AdaptadorAnimal(Context context, List<Animal> listaAnimales) {
+    // Constructor modificado para recibir lista de favoritos y MainActivity
+    public AdaptadorAnimal(Context context, List<Animal> listaAnimales, List<Animal> listaFavoritos, MainActivity mainActivity) {
         this.context = context;
-        this.listaAnimalesOriginal = listaAnimales;
+        this.listaAnimalesOriginal = listaAnimales != null ? listaAnimales : new ArrayList<>();
+        this.listaAnimalesFiltrada = new ArrayList<>(this.listaAnimalesOriginal);
+        this.listaFavoritos = listaFavoritos != null ? listaFavoritos : new ArrayList<>();
+        this.mainActivity = mainActivity; // Guardamos la referencia de MainActivity
     }
 
-    /**
-     * Constructor del adaptador.
-     * Lista inicial de animales a mostrar en el RecyclerView.
-     */
-    public AdaptadorAnimal(List<Animal> listaAnimales) {
-        this.listaAnimalesOriginal = (listaAnimales != null) ? listaAnimales : new ArrayList<>();
-        this.listaAnimalesFiltrada = new ArrayList<>(listaAnimalesOriginal);
-    }
+
+
 
     /**
      * Obtiene la posición del elemento seleccionado.
@@ -131,12 +130,17 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
         });
     }
 
+
     /**
      * Devuelve el tamaño de la lista filtrada de animales.
      */
     @Override
     public int getItemCount() {
-        return listaAnimalesFiltrada.size();
+        if (listaAnimalesFiltrada != null) {
+            return listaAnimalesFiltrada.size();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -144,14 +148,16 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
      */
     public void actualizarLista(List<Animal> nuevaLista) {
         if (nuevaLista != null) {
-            // Si la lista no es nula, actualizamos la lista original
+            // Actualiza la lista original
             listaAnimalesOriginal = nuevaLista;
-            // Si también usas una lista filtrada, puedes crearla aquí (si es necesario)
+            // Actualiza la lista filtrada (puedes aplicar un filtro si es necesario)
             listaAnimalesFiltrada = new ArrayList<>(nuevaLista);
             // Notificar al adaptador que los datos han cambiado
             notifyDataSetChanged();
         }
     }
+
+
 
 
     /**
@@ -189,4 +195,11 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
             iconoFavorito = itemView.findViewById(R.id.iconoFavorito);
         }
     }
+
+    // Método para actualizar la lista de favoritos
+    public void actualizarFavoritos(List<Animal> nuevosFavoritos) {
+        this.listaFavoritos = nuevosFavoritos;
+        notifyDataSetChanged();  // Esto actualizará el RecyclerView de favoritos
+    }
+
 }

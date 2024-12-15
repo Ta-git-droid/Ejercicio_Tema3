@@ -35,4 +35,8 @@
     <string name="animal_nulo_en_la_posici_n">"Animal nulo en la posición "</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_al_eliminar_animal">error al eliminar animal</string>
+    <string name="error_al_eliminar_el_animal">error al eliminar el animal</string>
+    <string name="animal_eliminado">animal eliminado</string>
+    <string name="error_selecciona_animal_para_eliminar">error selecciona animal para eliminar</string>
 </resources>
