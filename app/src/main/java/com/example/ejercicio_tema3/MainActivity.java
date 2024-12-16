@@ -11,9 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Animal> listaAnimalesFiltrada; // Lista filtrada de animales (según tipo).
     private FragmentAnimal fragment; // Fragmento donde se muestra la lista de animales.
     private ToggleButton togglePerros, toggleGatos; // Botones para activar el filtro de perros y gatos.
+    private AdaptadorAnimal adaptadorFavoritos; // Adaptador para la lista de favoritos.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragmentContainerViewListaAnimales, fragment)
                     .commit();
         }
+
+        // Configurar RecyclerView de favoritos
+        configurarRecyclerViewFavoritos ();
     }
 
     /**
@@ -89,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     private void configurarFiltros() {
         togglePerros = findViewById(R.id.filtroPerros);
         toggleGatos = findViewById(R.id.filtroGatos);
-
         // Al cambiar el estado de los filtros, actualizamos la lista filtrada.
         togglePerros.setOnCheckedChangeListener((buttonView, isChecked) -> actualizarListaFiltrada());
         toggleGatos.setOnCheckedChangeListener((buttonView, isChecked) -> actualizarListaFiltrada());
@@ -103,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
     private void configurarBotones() {
         ImageButton botonAgregar = findViewById(R.id.agregar);
         botonAgregar.setOnClickListener(v -> agregarAnimal()); // Al hacer clic, agregamos un nuevo animal.
-
         ImageButton botonEliminar = findViewById(R.id.eliminar);
         botonEliminar.setOnClickListener(v -> {
             // Aseguramos que el adaptador esté disponible y el fragmento tenga datos.
@@ -133,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         listaAnimales.remove(animal);
         // También eliminarlo de la lista filtrada si está presente.
         listaAnimalesFiltrada.remove(animal);
-
         // Actualiza la lista filtrada en el adaptador.
         actualizarListaFiltrada();
     }
@@ -146,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         listaAnimalesFiltrada.clear(); // Limpiar la lista filtrada antes de agregar nuevos elementos.
         boolean filtroPerrosActivo = togglePerros.isChecked(); // Verificar si el filtro de perros está activado.
         boolean filtroGatosActivo = toggleGatos.isChecked(); // Verificar si el filtro de gatos está activado.
-
         // Filtrar animales según los filtros activos.
         for (Animal animal : listaAnimales) {
             if (filtroPerrosActivo && animal.getTipo() == Animal.TipoAnimal.PERRO) {
@@ -156,17 +161,14 @@ public class MainActivity extends AppCompatActivity {
                 listaAnimalesFiltrada.add(animal); // Agregar gatos a la lista filtrada.
             }
         }
-
         // Si no hay filtros activos, mostrar todos los animales.
         if (!filtroPerrosActivo && !filtroGatosActivo) {
             listaAnimalesFiltrada.addAll(listaAnimales);
         }
-
         // Actualizar la vista del fragmento con la lista filtrada.
         if (fragment != null) {
             fragment.actualizarLista(listaAnimalesFiltrada);
         }
-
         // Si no se encuentran animales después del filtrado, mostrar un mensaje de advertencia.
         if (listaAnimalesFiltrada.isEmpty()) {
             Toast.makeText(this, "No se encontraron animales que coincidan con los filtros.", Toast.LENGTH_SHORT).show();
@@ -181,5 +183,19 @@ public class MainActivity extends AppCompatActivity {
         listaAnimales.add(nuevoAnimal);
         actualizarListaFiltrada(); // Actualizar la lista filtrada para mostrar el nuevo animal.
         Toast.makeText(this, "Animal añadido a la lista", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Configura el RecyclerView para la lista de favoritos.
+     * Los favoritos se muestran en una lista horizontal debajo del RecyclerView principal.
+     */
+    private void configurarRecyclerViewFavoritos() {
+        Set<Animal> favoritos = new HashSet<>();
+        List<Animal> listaFavoritos = new ArrayList<>();
+        RecyclerView rvFavoritos = findViewById ( R.id.recyclerViewFavoritos );
+        rvFavoritos.setLayoutManager ( new LinearLayoutManager( this , LinearLayoutManager.HORIZONTAL , false ) );
+        adaptadorFavoritos = new AdaptadorAnimal( listaFavoritos);
+        rvFavoritos.setAdapter ( adaptadorFavoritos );
+        adaptadorFavoritos.setFavoritosActualizadosListener(listaDeFavoritos -> adaptadorFavoritos.actualizarLista((List<Animal>) favoritos));
     }
 }

@@ -31,6 +31,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
     private OnAnimalSeleccionadoListener listener; // Listener para manejar la selección de un animal.
     private FavoritosActualizadosListener favoritosListener; // Listener para manejar actualizaciones en la lista de favoritos.
     private Animal animalSeleccionado; // Referencia al animal seleccionado.
+    private List<Animal> listaFavoritos; // Listener para gestionar actualizaciones de favoritos.
 
     /**
      * Constructor con listas de animales y favoritos.
@@ -43,6 +44,16 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
         this.listaAnimales = listaAnimales;
         this.favoritos.addAll(listaFavoritos); // Sincronizamos la lista de favoritos con los animales favoritos.
     }
+
+    public AdaptadorAnimal(List<Animal> listaAnimales) {
+        this.listaAnimales = listaAnimales;
+        this.favoritos = new HashSet<>();
+    }
+
+    public void setFavoritosActualizadosListener(FavoritosActualizadosListener favoritosListener) {
+        this.favoritosListener = favoritosListener;
+    }
+
 
     /**
      * Inflar el layout de cada item y crear el ViewHolder.
@@ -92,7 +103,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
 
             // Notificar al listener de favoritos que la lista ha cambiado
             if (favoritosListener != null) {
-                favoritosListener.favoritosActualizados(new ArrayList<>(favoritos));
+                favoritosListener.onFavoritosActualizados(new ArrayList<>(favoritos));
             }
         });
 
@@ -121,7 +132,6 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
         return listaAnimales.size();
     }
 
-
     /**
      * Actualiza la lista de animales en el adaptador.
      * @param nuevaListaAnimales La nueva lista de animales.
@@ -134,6 +144,12 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
             favoritos.removeIf(animal -> !nuevaListaAnimales.contains(animal));
             notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
         }
+    }
+
+    public void actualizarListaFavoritos (Set<Animal> favoritos) {
+            this.favoritos.clear();
+            this.favoritos.addAll(favoritos);
+            notifyDataSetChanged();
     }
 
     /**
@@ -159,7 +175,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
      * Interfaz para manejar actualizaciones en la lista de favoritos.
      */
     public interface FavoritosActualizadosListener {
-        void favoritosActualizados(List<Animal> listaFavoritosActualizada); // Método que se llama cuando los favoritos se actualizan
+        void onFavoritosActualizados(List<Animal> listaFavoritos); // Método que se llama cuando los favoritos se actualizan
     }
 
     /**
