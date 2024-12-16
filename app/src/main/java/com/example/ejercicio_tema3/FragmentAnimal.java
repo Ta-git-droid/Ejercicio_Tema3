@@ -6,12 +6,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 /**
  * Fragmento que representa la lista de animales en la interfaz de usuario.
@@ -24,19 +27,19 @@ public class FragmentAnimal extends Fragment {
     private AdaptadorAnimal adaptadorAnimal;
     private List<Animal> listaAnimales;
     private List<Animal> listaAnimalesFiltrados;
+    private List<Animal> listaFavoritos = new ArrayList<>(); // Lista de favoritos
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("FragmentAnimal", "onCreate: Inicializando fragmento");
         // Recuperamos los argumentos pasados al fragmento y verificamos si la lista de animales es null
         if (getArguments() != null) {
             listaAnimales = getArguments().getParcelableArrayList("animales");
-
             // Si la lista es null, la inicializamos como una lista vacía
             if (listaAnimales == null) {
                 listaAnimales = new ArrayList<>();
             }
-
             // Inicializamos la lista filtrada con los mismos elementos que la lista original
             listaAnimalesFiltrados = new ArrayList<>(listaAnimales);
         } else {
@@ -44,20 +47,32 @@ public class FragmentAnimal extends Fragment {
             listaAnimales = new ArrayList<>();
             listaAnimalesFiltrados = new ArrayList<>();
         }
+        Log.d("FragmentAnimal", "onCreate: Lista de animales cargada: " + listaAnimales.size() + " elementos");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflamos el layout del fragmento
+        // Inflar el layout del fragmento
         View rootView = inflater.inflate(R.layout.fragment_animal, container, false);
         recyclerView = rootView.findViewById(R.id.recyclerViewAnimal);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Verificamos si la lista de animales no es nula antes de crear el adaptador
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // Establecer el LayoutManager
+        Log.d("FragmentAnimal", "onCreateView: Inicializando RecyclerView");
         if (listaAnimales != null) {
-            // Inicializamos el adaptador con la lista de animales filtrados
-            adaptadorAnimal = new AdaptadorAnimal(getContext(), listaAnimalesFiltrados, new ArrayList<>());
+            Log.d("FragmentAnimal", "onCreateView: Lista de animales no es nula, creando adaptador");
+            // Crear el adaptador con la lista de animales y favoritos
+            adaptadorAnimal = new AdaptadorAnimal(getContext(), listaAnimalesFiltrados, listaFavoritos);
             recyclerView.setAdapter(adaptadorAnimal);
+            // Establecer un listener para actualizar los favoritos cuando cambien
+            adaptadorAnimal.setFavoritosActualizadosListener(favoritos -> {
+                Log.d("FragmentAnimal", "onCreateView: Favoritos actualizados: " + favoritos.size() + " elementos");
+                listaFavoritos = favoritos;
+                // Notificar a la MainActivity sobre los cambios en favoritos
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).actualizarFavoritos(listaFavoritos);
+                }
+            });
+        } else {
+            Log.d("FragmentAnimal", "onCreateView: La lista de animales es nula");
         }
 
         return rootView;
@@ -71,10 +86,14 @@ public class FragmentAnimal extends Fragment {
      */
     public void actualizarLista(List<Animal> listaAnimales) {
         if (adaptadorAnimal != null && listaAnimales != null) {
+            Log.d("FragmentAnimal", "actualizarLista: Actualizando lista de animales");
             this.listaAnimales = listaAnimales;
             listaAnimalesFiltrados = new ArrayList<>(listaAnimales); // Reiniciamos la lista filtrada
             // Actualizamos el adaptador con la nueva lista filtrada
             adaptadorAnimal.actualizarLista(listaAnimalesFiltrados);
+            Log.d("FragmentAnimal", "actualizarLista: Nueva lista de animales: " + listaAnimales.size() + " elementos");
+        } else {
+            Log.d("FragmentAnimal", "actualizarLista: Lista de animales es nula");
         }
     }
 
