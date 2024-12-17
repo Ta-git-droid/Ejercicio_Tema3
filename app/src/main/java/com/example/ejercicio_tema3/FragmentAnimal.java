@@ -2,8 +2,6 @@ package com.example.ejercicio_tema3;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +49,7 @@ public class FragmentAnimal extends Fragment {
         }
         Log.d("FragmentAnimal", "onCreate: Lista de animales cargada: " + listaAnimales.size() + " elementos");
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,4 +113,5 @@ public class FragmentAnimal extends Fragment {
     public AdaptadorAnimal getAdaptadorAnimal() {
         return adaptadorAnimal;
     }
+
 }

@@ -3,6 +3,7 @@
 
     <item
         android:id="@+id/menu_inicio"
+        android:icon="@android:drawable/ic_dialog_info"
         android:title="@string/inicio" />
 
     <item
@@ -15,10 +16,12 @@
 
     <item
         android:id="@+id/menu_agregar_animal"
+        android:icon="@android:drawable/ic_input_add"
         android:title="@string/agregar" />
 
     <item
         android:id="@+id/menu_eliminar_animal"
+        android:icon="@android:drawable/ic_delete"
         android:title="@string/elimin" />
 
 </menu>

@@ -75,7 +75,6 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
         holder.imagen.setImageResource(animal.getImagen());
         // Cambiar el estado del icono de favorito según si el animal está en la lista de favoritos
         holder.iconoFavorito.setImageResource(favoritos.contains(animal) ? R.drawable.corazon_relleno : R.drawable.corazon_vacio);
-
         // Configurar el evento de clic en el icono de favorito
         holder.iconoFavorito.setOnClickListener(v -> {
             if (favoritos.contains(animal)) {
@@ -91,10 +90,8 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
                 favoritosListener.onFavoritosActualizados(new ArrayList<>(favoritos));
             }
         });
-
         // Cambiar el color de fondo si el animal está seleccionado
         holder.itemView.setBackgroundColor(holder.getAdapterPosition() == posicionSeleccionada ? Color.LTGRAY : Color.TRANSPARENT);
-
         // Configurar el evento de clic en el item
         holder.itemView.setOnClickListener(v -> {
             // Verifica si la posición seleccionada cambió

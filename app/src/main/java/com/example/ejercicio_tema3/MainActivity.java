@@ -45,22 +45,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         } );
 
-        // Inicializar la lista de animales si no está creada
-        if (listaAnimales == null) {
-            listaAnimales = new ArrayList<>();
-            Log.d("MainActivity", "Lista de animales inicializada.");
-        }
-
         inicializarListas(); // Inicializa las listas de animales
-        Log.d("MainActivity", "Listas de animales inicializadas.");
 
-        // Crear y añadir el fragmento inicial solo si es la primera vez
         if (savedInstanceState == null) {
             fragment = new FragmentAnimal();
             Bundle datos = new Bundle();
             datos.putParcelableArrayList("animales", listaAnimales); // Pasar la lista de animales
             fragment.setArguments(datos);
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainerViewListaAnimales, fragment)
                     .commit();
@@ -71,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // Mostrar fragmento inicial al abrir la app
-        if (savedInstanceState == null) {
-            reemplazarFragmento(new FragmentAnimal()); // Fragmento inicial
-            Log.d("MainActivity", "Fragmento de inicio mostrado.");
-        }
+//        if (savedInstanceState == null) {
+//            reemplazarFragmento(new FragmentAnimal()); // Fragmento inicial
+//            Log.d("MainActivity", "Fragmento de inicio mostrado.");
+//        }
 
         // Manejo de selección de menú
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -82,7 +73,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "Opción seleccionada: " + itemId);
 
             if (itemId == R.id.menu_inicio) {
+                //reemplazarFragmento(new FragmentAnimal());
+                if (listaAnimales == null || listaAnimales.isEmpty()) {
+                    inicializarListas();
+                    Log.d("MainActivity", "Lista de animales inicializada.");
+                }
                 reemplazarFragmento(new FragmentAnimal());
+
             } else if (itemId == R.id.menu_filtrar_perros) {
                 reemplazarFragmento(FragmentoFiltrarPerros.newInstance(listaAnimales));
             } else if (itemId == R.id.menu_filtrar_gatos) {
