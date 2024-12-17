@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_inicio"
+        android:title="@string/inicio" />
+
+    <item
+        android:id="@+id/menu_filtrar_perros"
+        android:title="@string/perros" />
+
+    <item
+        android:id="@+id/menu_filtrar_gatos"
+        android:title="@string/gatos" />
+
+    <item
+        android:id="@+id/menu_agregar_animal"
+        android:title="@string/agregar" />
+
+    <item
+        android:id="@+id/menu_eliminar_animal"
+        android:title="@string/elimin" />
+
+</menu>

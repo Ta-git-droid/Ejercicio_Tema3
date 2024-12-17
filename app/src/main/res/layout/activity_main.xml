@@ -35,6 +35,8 @@
             android:id="@+id/titulo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="44dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:padding="8dp"
@@ -42,104 +44,49 @@
             android:textColor="@color/md_theme_onSecondary"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/logoCabecera"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/imagenPrincipal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.0"
+        app:menu="@menu/menu_personalizado"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:labelVisibilityMode="labeled"/>
 
     <ImageView
         android:id="@+id/imagenPrincipal"
-        android:layout_width="412dp"
-        android:layout_height="245dp"
+        android:layout_width="325dp"
+        android:layout_height="146dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="2dp"
         android:contentDescription="@string/perro_y_gato"
         android:scaleType="fitStart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         app:srcCompat="@drawable/perro_y_gato"
-        tools:srcCompat="@drawable/perro_y_gato"
-        tools:ignore="VisualLintBounds" />
-
-    <ToggleButton
-        android:id="@+id/filtroPerros"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/md_theme_inversePrimary"
-        android:padding="5dp"
-        android:textOff="@string/filtrar_perros"
-        android:textOn="@string/mostrando_perros"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imagenPrincipal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.949" />
-
-    <ToggleButton
-        android:id="@+id/filtroGatos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/md_theme_inversePrimary"
-        android:padding="5dp"
-        android:textOff="@string/filtrar_gatos"
-        android:textOn="@string/mostrando_gatos"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutBotones"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.95" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutBotones"
-        android:layout_width="409dp"
-        android:layout_height="69dp"
-        android:background="@color/md_theme_primary"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagenPrincipal">
-
-        <ImageButton
-            android:id="@+id/agregar"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:background="@color/md_theme_primaryFixed"
-            android:contentDescription="@string/Agregar"
-            app:srcCompat="@android:drawable/ic_input_add"
-            tools:ignore="ImageContrastCheck" />
-
-        <ImageButton
-            android:id="@+id/eliminar"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@color/md_theme_primaryFixed"
-            android:contentDescription="@string/eliminar"
-            app:srcCompat="@android:drawable/ic_delete" />
-
-    </LinearLayout>
+        tools:ignore="VisualLintBounds"
+        tools:srcCompat="@drawable/perro_y_gato" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewListaAnimales"
         android:name="com.example.ejercicio_tema3.FragmentAnimal"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="281dp"
+        android:layout_height="413dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutFavoritos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutBotones"
         tools:layout="@layout/fragment_animal" />
 
     <LinearLayout
@@ -172,6 +119,7 @@
             android:scaleX="0.7"
             android:scaleY="0.7"
             android:scrollbars="horizontal" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

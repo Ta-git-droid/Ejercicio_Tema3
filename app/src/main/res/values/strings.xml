@@ -34,6 +34,21 @@
     <string name="la_posici_n_seleccionada_es_inv_lida_reiniciando">La posición seleccionada es inválida. Reiniciando.</string>
     <string name="animal_nulo_en_la_posici_n">"Animal nulo en la posición "</string>
     <string name="animal_eliminado">animal eliminado</string>
+    <string name="agregar_animal">Agregar animal</string>
+    <string name="eliminar_animal">Eliminar animal</string>
+    <string name="perro">Perro</string>
+    <string name="gato">gato</string>
+    <string name="filtro_perros">Filtro: perros</string>
+    <string name="filtro_gatos">Filtro: gatos</string>
+    <string name="elimina">Eliminar</string>
+    <string name="agrega">Agregar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="inicio">Inicio</string>
+    <string name="perros">Perros</string>
+    <string name="gatos">Gatos</string>
+    <string name="agregar">Agregar</string>
+    <string name="elimin">Eliminar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

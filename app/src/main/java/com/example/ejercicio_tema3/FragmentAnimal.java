@@ -2,6 +2,8 @@ package com.example.ejercicio_tema3;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +15,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 /**
@@ -33,6 +34,7 @@ public class FragmentAnimal extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("FragmentAnimal", "onCreate: Inicializando fragmento");
+
         // Recuperamos los argumentos pasados al fragmento y verificamos si la lista de animales es null
         if (getArguments() != null) {
             listaAnimales = getArguments().getParcelableArrayList("animales");
@@ -54,14 +56,20 @@ public class FragmentAnimal extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflar el layout del fragmento
         View rootView = inflater.inflate(R.layout.fragment_animal, container, false);
+
+        // Inicializar RecyclerView
         recyclerView = rootView.findViewById(R.id.recyclerViewAnimal);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // Establecer el LayoutManager
+
         Log.d("FragmentAnimal", "onCreateView: Inicializando RecyclerView");
+
         if (listaAnimales != null) {
             Log.d("FragmentAnimal", "onCreateView: Lista de animales no es nula, creando adaptador");
+
             // Crear el adaptador con la lista de animales y favoritos
             adaptadorAnimal = new AdaptadorAnimal(getContext(), listaAnimalesFiltrados, listaFavoritos);
             recyclerView.setAdapter(adaptadorAnimal);
+
             // Establecer un listener para actualizar los favoritos cuando cambien
             adaptadorAnimal.setFavoritosActualizadosListener(favoritos -> {
                 Log.d("FragmentAnimal", "onCreateView: Favoritos actualizados: " + favoritos.size() + " elementos");
