@@ -28,10 +28,18 @@ public class FragmentAnimal extends Fragment {
     private List<Animal> listaAnimalesFiltrados;
     private List<Animal> listaFavoritos = new ArrayList<>(); // Lista de favoritos
 
+    // Método para crear una nueva instancia del fragmento y pasar los datos necesarios
+    public static FragmentAnimal newInstance(ArrayList<Animal> animales) {
+        FragmentAnimal fragment = new FragmentAnimal();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("animales", animales);  // Pasamos la lista de animales
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("FragmentAnimal", "onCreate: Inicializando fragmento");
 
         // Recuperamos los argumentos pasados al fragmento y verificamos si la lista de animales es null
         if (getArguments() != null) {

@@ -58,28 +58,21 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "Fragmento inicial añadido.");
         }
 
+
+
         // Configuración de BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        // Mostrar fragmento inicial al abrir la app
-//        if (savedInstanceState == null) {
-//            reemplazarFragmento(new FragmentAnimal()); // Fragmento inicial
-//            Log.d("MainActivity", "Fragmento de inicio mostrado.");
-//        }
 
         // Manejo de selección de menú
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            Log.d("MainActivity", "Opción seleccionada: " + itemId);
-
             if (itemId == R.id.menu_inicio) {
-                //reemplazarFragmento(new FragmentAnimal());
                 if (listaAnimales == null || listaAnimales.isEmpty()) {
                     inicializarListas();
-                    Log.d("MainActivity", "Lista de animales inicializada.");
+                   Log.d("MainActivity", "Lista de animales inicializada.");
+                } else {
+                    reemplazarFragmento(FragmentAnimal.newInstance(listaAnimales));
                 }
-                reemplazarFragmento(new FragmentAnimal());
-
             } else if (itemId == R.id.menu_filtrar_perros) {
                 reemplazarFragmento(FragmentoFiltrarPerros.newInstance(listaAnimales));
             } else if (itemId == R.id.menu_filtrar_gatos) {
@@ -184,15 +177,12 @@ public class MainActivity extends AppCompatActivity {
     private void eliminarAnimalSeleccionado() {
         // Obtener el fragmento activo
         Fragment fragmentActivo = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerViewListaAnimales);
-
         if (fragmentActivo != null && fragmentActivo instanceof FragmentAnimal) {
             // Si el fragmento activo es una instancia de FragmentAnimal
             FragmentAnimal fragmentAnimal = (FragmentAnimal) fragmentActivo;
             AdaptadorAnimal adaptador = fragmentAnimal.getAdaptadorAnimal();
-
             if (adaptador != null) {
                 Animal seleccionado = adaptador.obtenerAnimalSeleccionado();
-
                 if (seleccionado != null) {
                     listaAnimales.remove(seleccionado);
                     Log.d("MainActivity", "Animal eliminado: " + seleccionado.getNombre());
@@ -221,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
         favoritos = new HashSet<>(); // Inicializar el set de favoritos
         adaptadorFavoritos = new AdaptadorAnimal(this, new ArrayList<>(), new ArrayList<>());
         rvFavoritos.setAdapter(adaptadorFavoritos);
-
         // Verificación de que el fragmento y el adaptador no sean nulos
         if (fragment != null && fragment.getAdaptadorAnimal() != null) {
             fragment.getAdaptadorAnimal().setFavoritosActualizadosListener(listaDeFavoritos -> {
@@ -230,9 +219,6 @@ public class MainActivity extends AppCompatActivity {
                 adaptadorFavoritos.actualizarLista(new ArrayList<>(favoritos));  // Actualiza el RecyclerView de favoritos
                 Log.d("MainActivity", "Favoritos actualizados.");
             });
-        } else {
-            Toast.makeText(this, "Error al configurar favoritos", Toast.LENGTH_SHORT).show();
-            Log.e("MainActivity", "Error al configurar favoritos.");
         }
     }
 

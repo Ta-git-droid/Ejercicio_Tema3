@@ -110,7 +110,7 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
 
     @Override
     public int getItemCount() {
-        return listaAnimales.size(); // Retorna la cantidad de animales en la lista.
+        return listaAnimales.size();
     }
 
     /**
@@ -169,6 +169,6 @@ public class AdaptadorAnimal extends RecyclerView.Adapter<AdaptadorAnimal.Animal
         if (posicionSeleccionada != -1 && posicionSeleccionada < listaAnimales.size()) {
             return listaAnimales.get(posicionSeleccionada); // Retorna el animal seleccionado si hay uno.
         }
-        return null; // Retorna null si no hay animal seleccionado.
+        return null;
     }
 }
